@@ -10,7 +10,7 @@
     <script src="https://use.fontawesome.com/c9a6fcc362.js"></script>
   </head>
 
-
+  <?= $this->section('content') ?>
 
 
 
