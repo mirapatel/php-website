@@ -3,30 +3,29 @@
 //make everything in the vendor folder available to use
 require 'vendor/autoload.php';
 
-
-//instantiate (create instance of) plates library
-$plates = new League\Plates\Engine('app/templates');
-
 // echo $plates->render('landing');
 
 //load appropriate page
 
 //has the user requested a page?
-if (isset($_GET['page'])) {
-	//requested page
-	$page = $_GET['page'];
+// if (isset($_GET['page'])) {
+// 	//requested page
+// 	$page = $_GET['page'];
 
-} else {
-	//home page
-	$page = 'landing';
-}
+// } else {
+// 	//home page
+// 	$page = 'landing';
+// }
+
+$page = isset($_GET['page']) ? $_GET['page'] : 'landing';
 
 //load appropriate files based on the page
 switch($page) {
 
 	case 'landing':
 	case 'register':
-		echo $plates->render('landing');
+		require 'app/controllers/LandingController.php';
+		$controller = new LandingController();
 	break;
 
 	case 'about':
@@ -50,3 +49,5 @@ switch($page) {
 	break;
 
 }
+
+$controller->buildHTML();
