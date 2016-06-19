@@ -6,6 +6,7 @@ session_start();
 
 //make everything in the vendor folder available to use
 require 'vendor/autoload.php';
+require 'app/controllers/PageController.php';
 
 // echo $plates->render('landing');
 
@@ -48,7 +49,8 @@ switch($page) {
 	break;
 
 	case 'stream':
-		echo $_SESSION['id'];
+	require 'app/controllers/StreamController.php';
+		$controller = new StreamController($dbc);
 	break;
 
 	default:

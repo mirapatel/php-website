@@ -1,13 +1,11 @@
 <?php
 
-class LandingController {
+class LandingController extends PageController {
 
 	//properties(attributes)
 
 	private $emailMessage;
 	private $passwordMessage;
-	private $dbc;
-
 
 	//constructor
 	//magic 
