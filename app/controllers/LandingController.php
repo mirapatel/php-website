@@ -6,11 +6,12 @@ class LandingController {
 
 	private $emailMessage;
 	private $passwordMessage;
+	private $dbc;
 
 
 	//constructor
 	//magic 
-	public function __construct() {
+	public function __construct($dbc) {
 		// die('Landing controller has been made');
 
 		//if the user has submitted the user form
@@ -18,6 +19,9 @@ class LandingController {
 		// echo '<pre>';
 		// print_r ($_POST);
 		// echo '<pre>';
+
+		//save the database connection for later
+		$this->dbc = $dbc;
 
 		if (isset($_POST['new-account'])) {
 			$this->validateRegistrationForm();
@@ -72,6 +76,23 @@ class LandingController {
 			$totalErrors ++;
 		}
 
+		//make sure the email is not in use 
+		$filteredEmail = $this->dbc->real_escape_string($_POST['email']);
+
+		$sql = "SELECT email 
+				FROM users 
+				WHERE email = '$filteredEmail' ";
+
+		//run the query
+		$result = $this->dbc->query($sql);
+
+		//if the query failed OR there is a result 
+		if (!$result || $result->num_rows > 0 ) {
+			$this->emailMessage = 'Email in use';
+			$totalErrors++;
+
+		}		
+
 		//if the password is less than 8 characters long
 		if (strlen ($_POST['password'] ) < 8) {
 
@@ -85,7 +106,28 @@ class LandingController {
 		if ($totalErrors == 0) {
 
 			//validation passed!
+
+			//fliter user data before using it in a query
 			
+
+			//hash the password
+			$filteredPassword = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+			// die($filteredPassword);
+
+			//prepare the SQL
+			$sql = "INSERT INTO users (email, password) 
+					VALUES ('$filteredEmail','$filteredPassword')"; 
+
+			$this->dbc->query($sql);
+
+			//check to make sure this worked
+
+			//log the user in
+			$_SESSION['id'] = $this->dbc->insert_id;
+			
+			//redirect to the user to their stream page
+			header('Location: index.php?page=stream');
 		}
 	}
 
