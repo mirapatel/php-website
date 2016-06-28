@@ -1,4 +1,9 @@
-<?php $this->layout('master');  ?>
+<?php 
+  $this->layout('master', [
+    'title'=>'Login to Pinterest',
+    'desc'=>'Login in and get started with Pinterest'
+  ]);  
+?>
 <body id="login-page">
 
     <div class="row align-center" id="login-container">
@@ -9,8 +14,18 @@
         <hr>
         <form action="index.php?page=login" method="post"> 
         <!-- get for non sensitive information -->
-          <input type="text" name="email" placeholder="Email">
+          <input type="text" name="email" placeholder="Email" value="<?= isset($_POST['login']) ? $_POST['email'] : '' ?>">
+          <?php if(isset($emailMessage)) :?>
+          <p> <?= $emailMessage ?> </p>
+          <?php endif  ?>
           <input type="password" name="password" placeholder="Create a password">
+          <?php if(isset($passwordMessage)) :?>
+          <p> <?= $passwordMessage ?> </p>
+          <?php endif  ?>
+
+          <?php if(isset($loginMessage)) :?>
+          <p> <?= $loginMessage ?> </p>
+          <?php endif  ?>
           <small>Are you a business? <a href="">Get started here</a></small>
           <hr>
           <div class="row">

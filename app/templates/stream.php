@@ -1,4 +1,10 @@
-<?php $this->layout('master');  ?>
+<?php 
+  $this->layout('master', [
+    'title'=>'Content stream',
+    'desc'=>'The latest posts from people you follow and categories you like'
+  ]);  
+?>
+
 <body id="stream-page">
 
     <nav class="row expanded">
@@ -14,7 +20,7 @@
         </form>
       </div>
       <div class="columns large-2" id="account-bar">
-        <a href="account.html" class="button secondary">
+        <a href="index.php?page=account" class="button secondary">
           <img src="http://placehold.it/16" alt="">
           Your Name
         </a>
@@ -24,14 +30,28 @@
       </div>
     </nav>
 
+    <div id="grid" class="">
+
     <?php foreach($allPosts as $item): ?>
-<!--     <div id="grid" class=""> -->
+
       <article class="grid-item">
+      <a href="index.php?page=post&postid=<?=$item['id'] ?>">
         <img src="<?= $item['image'] ?>" alt="">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+      </a>
         <div class="grid-content">
           <a href="" class="button alert save"><i class="fa fa-thumb-tack" aria-hidden="true"></i> Save</a>
           <a href="" class="button secondary heart"><i class="fa fa-heart" aria-hidden="true"></i></a>
-          <h1><?= $item['title'] ?></h1>
+          <h1>  <!-- block-->
+            <a href="index.php?page=post&postid=<?=$item['id'] ?>"> <!-- inline-->
+            <?= $item['title'] ?>
+            </a>
+          </h1>
           <a href=""><i class="fa fa-thumb-tack" aria-hidden="true"></i> 15</a>
           <a href=""><i class="fa fa-heart" aria-hidden="true"></i> 3</a>
           <div class="media-object">

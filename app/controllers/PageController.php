@@ -6,6 +6,7 @@ abstract class PageController {
 	protected $metaDesc;
 	protected $dbc;
 	protected $plates;
+	protected $data = [];
 
 	public function __construct() {
 
@@ -15,4 +16,13 @@ abstract class PageController {
 
 	//force children classes to have the buildHTML function
 	abstract public function buildHTML();
+
+	public function mustBeLoggedIn() {
+
+		//if you are not logged in
+		if( !isset($_SESSION['id']) ) {
+			//redirect user to the login page
+			Header('Location: index.php?page=login');
+		}
+	}
 }

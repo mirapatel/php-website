@@ -15,19 +15,14 @@ class StreamController extends PageController {
 
 		$this->dbc = $dbc;
 
-		//if you are not logged in
-		if( !isset($_SESSION['id']) ) {
-			//redirect user to the login page
-			Header('Location: index.php?page=login');
-		}
+		$this->mustBeLoggedIn();
+
 	}
 	//methods
 	public function buildHTML() {
 
 		//get the latest posts (pins)
 		$allData = $this->getLastestPosts();
-
-		$data = [];
 
 		$data['allPosts'] = $allData;
 
