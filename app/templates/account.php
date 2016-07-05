@@ -44,7 +44,7 @@
 
 	<div>
 		<label for="image">Image: </label>
-		<input type="file" name="image[]" id="image" multiple>
+		<input type="file" name="image" id="image">
 		<?= isset($fileMessage) ? $fileMessage : '' ?>
 	</div>
 

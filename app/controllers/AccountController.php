@@ -1,6 +1,10 @@
 <?php 
 
+use Intervention\Image\ImageManager;
+
 class AccountController extends PageController {
+
+	private $acceptableImageTypes = ['image/jpeg', 'image/png', 'image/gif','image/bmp' ,'image/tiff'];
 
 	public function __construct($dbc) {
 
@@ -73,6 +77,8 @@ class AccountController extends PageController {
 		$title = trim ($_POST['title']);
 		$desc = trim ($_POST['desc']);
 
+
+
 		//title
 		if (strlen($title) == 0) {
 			$this->data['titleMessage'] = 'Required ';
@@ -91,7 +97,37 @@ class AccountController extends PageController {
 			$totalErrors++;
 		}
 
+		//make sure the user has provided an image //if statements run with a true never a false
+		if (in_array($_FILES['image'] ['error'], [1,3,4] )) {
+			//show error messages to the user
+			$this->data['fileMessage'] = 'Image failed to upload';
+			$totalErrors++;
+		} elseif (!in_array($_FILES['image']['type'], $this->acceptableImageTypes)) {
+			$this->data['fileMessage'] = 'Must be jpeg, png, gif, bmp or tiff';
+			$totalErrors++;
+
+		}
+
 		if($totalErrors == 0) {
+
+			//instance of intervention image
+			$manager = new ImageManager();
+
+			//get the file that we just uploaded
+			$image = $manager->make($_FILES['image']['tmp_name']);
+
+			//determine the file type
+			$fileExtension = $this->getFileExtension ($image->mime());
+
+			$fileName = uniqid();
+
+			$image->save("img/uploads/original/{$fileName}{$fileExtension}");
+
+			$image->resize(320, null, function ($constraint) {
+    		$constraint->aspectRatio();
+			});
+
+			$image->save("img/uploads/stream/$fileName$fileExtension");
 
 			//filter the data
 			$title = $this->dbc->real_escape_string($title);
@@ -103,8 +139,8 @@ class AccountController extends PageController {
 			$userID = $_SESSION['id'];
 
 			//SQL
-			$sql = "INSERT INTO posts (title, description, user_id)
-					VALUES ('$title', '$desc', $userID) ";
+			$sql = "INSERT INTO posts (title, description, user_id, image)
+					VALUES ('$title', '$desc', $userID, '$fileName$fileExtension') ";
 
 			$this->dbc->query($sql);
 
@@ -120,5 +156,31 @@ class AccountController extends PageController {
 
 
 	}	
+
+	private function getFileExtension($mimeType) {
+
+		switch($mimeType) {
+
+			case 'image/png':
+				return '.png';
+			break;
+
+			case 'image/gif':
+				return '.gif';
+			break;
+
+			case 'image/jpeg':
+				return '.jpg';
+			break;
+
+			case 'image/bmp':
+				return '.bmp';
+			break;
+
+			case 'image/tiff':
+				return '.tiff';
+			break;
+		}
+	}
 
 }
