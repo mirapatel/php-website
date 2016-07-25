@@ -44,7 +44,7 @@
           <a href="" class="button secondary heart"><i class="fa fa-heart" aria-hidden="true"></i></a>
           <h1>  <!-- block-->
             <a href="index.php?page=post&postid=<?=$item['id'] ?>"> <!-- inline-->
-            <?= $item['title'] ?>
+            <?= htmlentities($item['title']) ?>
             </a>
           </h1>
           <a href=""><i class="fa fa-thumb-tack" aria-hidden="true"></i> 15</a>

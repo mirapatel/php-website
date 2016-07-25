@@ -29,7 +29,7 @@ class PostController extends PageController {
 		$postID = $this->dbc->real_escape_string($_GET['postid']);
 
 		//get info about this post
-		$sql = "SELECT title, description, image, created_at, updated_at, first_name, last_name
+		$sql = "SELECT title, description, image, created_at, updated_at, first_name, last_name, user_id
 				FROM posts
 				JOIN users
 				ON user_id = users.id
@@ -61,12 +61,12 @@ class PostController extends PageController {
 		}
 
 		//get all the comments!
-		$sql = "SELECT user_id, comment, CONCAT(first_name, ' ' ,last_name) AS author
+		$sql = "SELECT comments.id, user_id, comment, CONCAT(first_name, ' ' ,last_name) AS author
 				FROM comments
 				JOIN users
 				ON comments.user_id = users.id
 				WHERE post_id = $postID 
-				ORDER BY date_created DESC ";
+				ORDER BY created_at DESC ";
 
 		$result = $this->dbc->query($sql);
 
