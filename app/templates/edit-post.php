@@ -1,26 +1,37 @@
-<?php 
-  $this->layout('master', [
-    'title'=>'Edit post page', //associate array
-    'desc'=>'Edit and view individual post'
-  ]);  
+<?php $this->layout('master' , [
+		'title'=>'Edit post page', //associate array
+    	'desc'=>'Edit your post'
+  ]); 
 ?>
 
-<h1>Edit Post: <?= $this->e($originalTitle)?></h1>
+<body>
+<?= $this->insert('nav') ?>
 
-<form action="<?= $_SERVER['REQUEST_URI']?>" method="post" enctype="multipart/form-data">	
+<h1>Edit post: <?= htmlentities($originalTitle) ?></h1>
+
+
+
+<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" enctype="multipart/form-data">
+	
 	<div>
 		<label for="title">Title: </label>
-		<input type="text" id="title" name="title" value="<?= $post['title']?>">
-		<?= isset($titleError) ?  $titleError : '' ?>
-	</div>
-	<div>
-		<label for="desc">Description: </label>
-		<textarea name="description" id="desc"><?= $post['description']?></textarea>
-		<?= isset($descError) ?  $descError : '' ?>
+		<input type="text" value="<?= $post['title'] ?>" id="title" name="title">
+		<?= isset($titleError) ? $titleError : '' ?>
 	</div>
 
-	<img src="img/uploads/stream/<?= $post['image'] ?>" alt=="">
+	<div>
+		<label for="desc">Description: </label>
+		<textarea id="desc" name="description"><?= $post['description'] ?></textarea>
+		<?= isset($descError) ? $descError : '' ?>
+	</div>
+
+	<img src="img/uploads/stream/<?= $post['image'] ?>" alt="">
+
 	<input type="file" name="image">
 
 	<input type="submit" name="edit-post">
+	<?= isset($updateMessage) ? $updateMessage : '' ?>
+
 </form>
+
+</body>

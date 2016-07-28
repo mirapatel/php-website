@@ -7,6 +7,8 @@
 
 <body id="account-page">
 
+<?= $this->insert('nav') ?>
+
 <h1>Account Page</h1>
 
 <form action="index.php?page=account" method="post">

@@ -4,7 +4,12 @@
   ]); 
 ?>
 
+<body>
+
+<?= $this->insert('nav') ?>
+
 <h1>Edit Comment</h1>
+
 
 <form action="index.php?page=edit-comment&id=<?= $_GET['id'] ?>" method="post">
 
@@ -15,3 +20,4 @@
 	
 
 </form>
+</body>
